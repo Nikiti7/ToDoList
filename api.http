@@ -1,0 +1,56 @@
+### Переменные окружения
+@host = http://127.0.0.1:8000/api/v1
+
+### 1. Создаем первую задачу (POST)
+# После отправки, если это первые 5 задач, статус будет "new"
+POST {{host}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Изучить основы Symfony",
+  "description": "Понять разницу между Express и Symfony"
+}
+
+###
+
+### 2. Создаем еще одну задачу (POST)
+POST {{host}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Написать консольные команды",
+  "description": "Это будет в шаге 6"
+}
+
+###
+
+### 3. Получаем список всех задач (GET)
+GET {{host}}/tasks
+
+###
+
+### 4. Получаем список задач с фильтром по статусу (GET)
+GET {{host}}/tasks?status=new
+
+###
+
+### 5. Получаем конкретную задачу по ID (GET)
+GET {{host}}/tasks/1
+
+###
+
+### 6. Изменяем статус задачи (PUT)
+PUT {{host}}/tasks/1/status
+Content-Type: application/json
+
+{
+  "status": "in_progress"
+}
+
+### 7. Тест 404: Запрос к несуществующему эндпоинту API
+GET http://127.0.0.1:8000/api/v1/some-fake-url
+
+###
+
+### 8. Тест 405: Неверный HTTP-метод (отправляем POST вместо GET)
+POST http://127.0.0.1:8000/api/v1/tasks/1
