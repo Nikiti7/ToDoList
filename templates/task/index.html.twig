@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Список задач{% endblock %}
+
+{% block body %}
+<style>
+    body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; color: #333; }
+    h1 { color: #2c3e50; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #34495e; color: #fff; font-weight: bold; }
+    tr:hover { background-color: #f9f9f9; }
+    
+    /* Стили для красивых бейджей статусов */
+    .status { padding: 5px 10px; border-radius: 20px; font-size: 0.85em; font-weight: bold; text-transform: uppercase; display: inline-block; }
+    .status-new { background-color: #d1ecf1; color: #0c5460; }
+    .status-in_progress { background-color: #fff3cd; color: #856404; }
+    .status-done { background-color: #d4edda; color: #155724; }
+    .status-pending { background-color: #e2e3e5; color: #383d41; }
+    .status-cancelled { background-color: #f8d7da; color: #721c24; }
+</style>
+
+<h1>Система управления задачами</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Статус</th>
+            <th>Дата создания</th>
+            <th>Дата обновления</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td><strong>{{ task.title }}</strong></td>
+                <td>{{ task.description ?? '<span style="color: #bbb;">нет описания</span>' }}</td>
+                <td>
+                    <span class="status status-{{ task.status }}">
+                        {{ task.status }}
+                    </span>
+                </td>
+                <td>{{ task.createdAt|date('Y-m-d H:i:s') }}</td>
+                <td>{{ task.updateAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 20px; color: #777;">
+                    Задач пока нет. Добавьте их через API (api.http) или консоль!
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
